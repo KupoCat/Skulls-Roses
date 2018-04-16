@@ -82,3 +82,7 @@ class PlayerTest(TestCase):
             self.player.play_card()
         self.player.reset_round()
         self.test_starting_hand()
+
+    def test_point(self):
+        self.player.award_point()
+        self.assertEqual(self.player.points, 1)

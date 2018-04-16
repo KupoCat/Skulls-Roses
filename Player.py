@@ -12,6 +12,7 @@ class Player:
             self.hand.append(Card(isSkull=False))
         self.hand.append(Card(isSkull=True))
         self.played_cards = list()
+        self.points = 0
 
     def has_skull(self):
         return any(card.isSkull for card in self.hand)
@@ -67,6 +68,8 @@ class Player:
     def raise_bet(self, current_bet: int, played_cards: int):
         return self.legal_input(list(range(current_bet+1, played_cards)) + [0], 'Raise from 2?', int)
 
+    def award_point(self):
+        self.points += 1
 
 class RandomPlayer(Player):
     def legal_input(self, seq, msg, return_type):
