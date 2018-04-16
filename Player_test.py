@@ -18,6 +18,7 @@ class PlayerTest(TestCase):
     def test_starting_hand(self):
         self.assertEqual(len(self.player.hand), DEFAULT_HAND_SIZE)
         self.assertTrue(self.player.has_skull)
+        self.assertEqual(self.player.points, 0)
 
         def count_skulls(player):
             return len([card for card in self.player.hand if card.isSkull])

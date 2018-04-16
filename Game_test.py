@@ -21,10 +21,14 @@ class GameTest(TestCase):
         self.assertEqual(winner.points, 2)
 
     def test_win_last_man_standing(self):
-        winner = self.game.get_winner()
-        self.assertGreater(len(winner.hand), 0)
-        for player in self.game.players:
-            self.assertEqual(len(player.hand), 0)
+        self.assertEqual(len(self.game.players), 0)
+        self.assertEqual(self.game.number_of_players, 1)
+
+    def test_eliminate_player(self):
+        player_number = self.game.eliminate_player(0)
+        self.assertEqual(player_number, 0)
+        self.assertEqual(len(self.game.players), MOCK_GAME_SIZE - 1)
+        self.assertEqual(self.game.number_of_players, MOCK_GAME_SIZE - 1)
 
     def test_successful_choice(self):
         ...
