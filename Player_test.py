@@ -58,7 +58,7 @@ class PlayerTest(TestCase):
     def test_corner_bets(self):
         for _ in range(DEFAULT_HAND_SIZE):
             self.player.play_card()
-        bet_samples = (self.player.play(is_random=True, played_cards=PlayerTest.MOCK_PLAYED_CARDS)
+        bet_samples = (self.player.play(played_cards=PlayerTest.MOCK_PLAYED_CARDS)
                        for _ in range(DEFAULT_HAND_SIZE))  # Sampling for isRandom
         self.assertTrue(all(bet > 0 for bet in bet_samples),
                         'Handless player did not bet')

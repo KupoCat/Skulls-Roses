@@ -29,8 +29,8 @@ class Player:
         self.played_cards.append(played_card)
         return played_card
 
-    def play(self, played_cards: int, is_random=False) -> int:
-        if len(self.hand) == 0 or (is_random and bool(random.getrandbits(1))) or self.decide_to_bet():
+    def play(self, played_cards: int) -> int:
+        if len(self.hand) == 0 or self.decide_to_bet():
             return self.bet(played_cards)
         else:
             self.play_card()
