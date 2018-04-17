@@ -18,16 +18,18 @@ class GameTest(TestCase):
         self.assertListEqual([len(player.played_cards) for player in self.game.players], [1]*MOCK_GAME_SIZE)
 
     def test_turn(self):
-        tested_player = self.game.get_player(1)
-        tested_player.play = MagicMock()
+        tested_player = self.game.current_player
+        tested_player.play = MagicMock(return_value = 0)
         self.game.turn()
         tested_player.play.assert_called()
-        self.assertEqual(self.game.current_player, self.game.get_player(2))
+        # self.assertEqual(self.game.current_player, self.game.get_player(2)) # game.round() should keep track of who's turn it is
     
     def test_betting_round(self):
         tested_player = self.game.get_player(1)
         tested_player.play = MagicMock(return_value=2)
-        self.game.raise_round = MagicMock()
+        self.game.raise_round = MagicMock(return_value=[0,0])
+        self.game.reveal_round = MagicMock() # not tested
+        self.game.round()
         self.game.raise_round.assert_called_with(highest_bet=2, leading_player=tested_player)
     
     def test_passing_raise_round(self):
@@ -54,16 +56,17 @@ class GameTest(TestCase):
         self.game.turn.assert_has_calls([call()]*4)
 
     def test_win_points(self):
+        winning_player = self.game.get_player(1)
+        winning_player.points = MagicMock(return_value=Game.WINNING_POINTS)
         winner = self.game.get_winner()
-        self.assertEqual(winner.points, 2)
+        self.assertEqual(winner.points, Game.WINNING_POINTS)
 
     def test_win_last_man_standing(self):
         self.assertEqual(len(self.game.players), 0)
         self.assertEqual(self.game.number_of_players, 1)
 
     def test_eliminate_player(self):
-        player_number = self.game.eliminate_player(0)
-        self.assertEqual(player_number, 0)
+        self.game.eliminate_player(self.game.get_player(1))
         self.assertEqual(len(self.game.players), MOCK_GAME_SIZE - 1)
         self.assertEqual(self.game.number_of_players, MOCK_GAME_SIZE - 1)
 
